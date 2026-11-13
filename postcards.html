@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script>/* open inside the music shell so the soundtrack never stops */
+(function(){var inShell=false;try{inShell=!!(window.parent!==window&&window.parent.FL_SHELL)}catch(e){}
+if(!inShell){var p=location.pathname.split('/').pop().replace('.html','')||'show';location.replace('index.html?p='+p+location.hash)}})();</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FLORAISON Postcard Box</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Space+Mono:wght@400;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* layout: a kraft-paper box of landscape postcards; each card flips to a written back with stamp and postmark */
+  --kraft:#D7BE97;
+  --kraft-2:#C9AC80;
+  --card:#FFFBF2;
+  --ink:#1F1A14;
+  --post:#B4382A;
+  --mute:#7A6A55;
+  --wide:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --serif:"Playfair Display","Georgia","Times New Roman",serif;
+  --mono:"Space Mono","Courier New",monospace;
+  --cjk:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--kraft);color:var(--ink);font-family:var(--wide),var(--cjk);-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(rgba(90,60,20,.10) 1px,transparent 1.2px),radial-gradient(rgba(255,255,255,.12) 1px,transparent 1.2px);background-size:7px 7px,11px 11px;background-position:0 0,3px 5px}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--post);outline-offset:3px}
+.pad{padding-left:clamp(16px,4vw,56px);padding-right:clamp(16px,4vw,56px)}
+.lab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+nav{display:flex;justify-content:space-between;align-items:center;height:60px}
+nav .logo{font-family:var(--wide);font-stretch:125%;font-weight:800;font-size:18px;letter-spacing:.06em;text-decoration:none}
+header{padding-top:clamp(30px,5vw,60px);padding-bottom:clamp(24px,3vw,40px);display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end}
+@media (max-width:760px){header{grid-template-columns:1fr}}
+header h1{font-family:var(--wide);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(46px,9vw,130px);line-height:.82;letter-spacing:-.01em}
+header h1 em{display:block;font-family:var(--serif);font-weight:400;text-transform:none;font-size:.5em;margin-top:.2em}
+.seal{width:150px;height:150px;border-radius:50%;border:3px double var(--post);color:var(--post);display:grid;place-items:center;text-align:center;transform:rotate(-12deg);font-family:var(--mono);font-size:11px;letter-spacing:.12em;line-height:1.6;opacity:.85}
+.seal b{display:block;font-family:var(--wide);font-stretch:125%;font-size:20px;letter-spacing:.04em}
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding-bottom:22px}
+.tools button{padding:9px 16px;border:1.5px solid var(--ink);border-radius:99px;font-family:var(--mono);font-size:12px;letter-spacing:.08em}
+.tools button[aria-pressed="true"]{background:var(--ink);color:var(--card)}
+.tools .hint{margin-left:auto;font-family:var(--cjk);font-size:13px;color:var(--mute)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:clamp(18px,2.4vw,34px);padding-bottom:80px}
+.pc{perspective:1600px;aspect-ratio:3/2;transform:rotate(var(--r));transition:transform .4s}
+.pc:hover{transform:rotate(0deg) translateY(-4px)}
+.pc .in{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1);cursor:pointer}
+.pc.flipped .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--card);box-shadow:0 14px 26px -12px rgba(60,35,5,.55),0 2px 4px rgba(60,35,5,.25)}
+.front{padding:9px}
+.front img{width:100%;height:100%;object-fit:cover}
+.front::after{content:"";position:absolute;left:9px;right:9px;bottom:9px;height:45%;background:linear-gradient(transparent,rgba(0,0,0,.55));pointer-events:none}
+.front .corner{z-index:1;position:absolute;left:18px;bottom:16px;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.6);font-family:var(--serif);font-style:italic;font-size:clamp(18px,2vw,24px)}
+.front .corner small{display:block;font-family:var(--mono);font-style:normal;font-size:10px;letter-spacing:.14em}
+.back{transform:rotateY(180deg);display:grid;grid-template-columns:1.1fr 1px .9fr;gap:14px;padding:16px 18px;background:var(--card);background-image:repeating-linear-gradient(0deg,transparent 0 23px,rgba(0,0,0,.035) 23px 24px)}
+.back .msg{display:flex;flex-direction:column;gap:8px;min-width:0}
+.back .msg .k{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--mute)}
+.back .msg .t{font-family:var(--serif);font-style:italic;font-size:clamp(20px,2.1vw,26px);line-height:1.05}
+.back .msg p{font-family:var(--cjk);font-size:12.5px;line-height:1.65}
+.back .msg .wds{display:flex;flex-wrap:wrap;gap:4px 12px}
+.back .msg .wds span{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--mute)}
+.back .msg .wds b{font-family:var(--cjk);font-size:12.5px;color:var(--ink);letter-spacing:0}
+.back .msg .sig{margin-top:auto;font-family:var(--serif);font-style:italic;font-size:17px}
+.back .rule{background:rgba(31,26,20,.25)}
+.back .addr{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:7px;min-width:0}
+.back .addr .l{border-bottom:1px solid rgba(31,26,20,.35);padding-bottom:3px;font-family:var(--cjk);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.back .addr .l span{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--mute);margin-right:6px}
+.stamp{position:absolute;right:0;top:0;width:58px;height:72px;padding:5px;background:#fff;
+  -webkit-mask:radial-gradient(circle at 3px 3px,transparent 2.3px,#000 2.6px) -3px -3px/6px 6px;mask:radial-gradient(circle at 3px 3px,transparent 2.3px,#000 2.6px) -3px -3px/6px 6px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.2))}
+.stamp .si{width:100%;height:100%;background-size:cover;background-position:center;display:flex;flex-direction:column;justify-content:space-between;padding:3px;color:#fff;font-family:var(--mono);font-size:8px;text-shadow:0 1px 3px rgba(0,0,0,.7)}
+.stamp .si b{font-family:var(--wide);font-stretch:125%;font-size:11px}
+.pm{position:absolute;right:30px;top:34px;width:76px;height:76px;border-radius:50%;border:2px solid var(--post);color:var(--post);display:grid;place-items:center;text-align:center;font-family:var(--mono);font-size:7.5px;letter-spacing:.08em;line-height:1.5;transform:rotate(-14deg);opacity:.8;mix-blend-mode:multiply}
+.pm::after{content:"";position:absolute;left:62px;top:24px;width:70px;height:28px;background:repeating-linear-gradient(180deg,var(--post) 0 2px,transparent 2px 7px);opacity:.75}
+.pm b{display:block;font-size:10px}
+@media (max-width:420px){.back .msg p{font-size:11.5px}.pm{right:20px}}
+.lb{position:fixed;inset:0;z-index:50;display:none;background:rgba(28,20,10,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.lb.open{display:block}
+.lb .stagebox{position:absolute;left:50%;top:50%;transform:translate(-50%,-52%)}
+.lb .pc{width:540px;height:360px;aspect-ratio:auto;transform:none!important;transition:none}
+.more{display:none}
+.lb .more{display:flex;flex-direction:column;gap:3px;margin-top:4px;padding-top:8px;border-top:1px dashed rgba(31,26,20,.3)}
+.more .mk{font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;color:var(--mute);margin-bottom:2px}
+.more div{display:flex;align-items:baseline;gap:6px;font-family:var(--cjk);font-size:11.5px}
+.more div i{font-style:normal;font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;color:var(--mute)}
+.more div .dl{flex:1;border-bottom:1px dotted rgba(31,26,20,.35);transform:translateY(-3px)}
+.more div .ml{font-family:var(--mono);font-size:9.5px}
+.more .lat{font-family:var(--serif);font-style:italic;font-size:17px}
+.lb .pc .face{box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.3)}
+.lb .wrap{opacity:0;transform:translateY(24px) scale(.96);transition:opacity .45s,transform .55s cubic-bezier(.2,.8,.2,1)}
+.lb.show .wrap{opacity:1;transform:none}
+.lb .ctl{position:absolute;left:0;right:0;bottom:22px;display:flex;justify-content:center;align-items:center;gap:10px;color:#FFFBF2}
+.lb .ctl button{height:42px;min-width:42px;padding:0 16px;border:1.5px solid rgba(255,251,242,.7);border-radius:99px;font-family:var(--mono);font-size:12px;letter-spacing:.1em}
+.lb .ctl button:hover{background:#FFFBF2;color:var(--ink)}
+.lb .ctl .ct{font-family:var(--mono);font-size:11px;letter-spacing:.16em;opacity:.8;min-width:90px;text-align:center}
+.lb .x{position:absolute;top:18px;right:clamp(16px,4vw,56px);height:42px;padding:0 16px;border:1.5px solid rgba(255,251,242,.7);border-radius:99px;color:#FFFBF2;font-family:var(--mono);font-size:12px;letter-spacing:.1em}
+.lb .x:hover{background:#FFFBF2;color:var(--ink)}
+.lb .cap{position:absolute;top:26px;left:clamp(16px,4vw,56px);color:#FFFBF2;font-family:var(--mono);font-size:11px;letter-spacing:.16em;opacity:.8}
+.grid .pc .in{cursor:zoom-in}
+footer{padding-top:30px;padding-bottom:40px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1.5px solid rgba(31,26,20,.3)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* Italiana is upright only: never fake an italic */
+body{font-synthesis-style:none}
+</style>
+</head>
+<body>
+<nav class="pad">
+  <a class="logo" href="show.html">FLORAISON</a>
+  <span style="display:flex;gap:22px"><a class="lab" href="magazine.html">Magazine</a><a class="lab" href="show.html">← Back to the show</a></span>
+</nav>
+<header class="pad">
+  <h1>Postcard Box<em>Greetings</em></h1>
+  <div class="seal" aria-hidden="true"><div><b>78</b>CARDS<br>RESORT 2027<br>26 MODELS</div></div>
+</header>
+<div class="tools pad" role="group" aria-label="篩選">
+  <button data-f="all" aria-pressed="true">All 78</button>
+  <button data-f="A" aria-pressed="false">I · Noon</button>
+  <button data-f="B" aria-pressed="false">II · Afternoon</button>
+  <button data-f="C" aria-pressed="false">III · Dusk</button>
+  <button id="shuffle">Shuffle</button>
+  <span class="hint">放大 ZOOM · 翻面 FLIP</span>
+</div>
+<main class="grid pad" id="grid"></main>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="明信片">
+  <span class="cap" id="lbcap"></span><button class="x" id="lbx">CLOSE</button>
+  <div class="stagebox" id="lbstage"><div class="wrap" id="lbwrap"></div></div>
+  <div class="ctl"><button id="lbp" aria-label="上一張">←</button><button id="lbf">翻面 FLIP</button><span class="ct" id="lbct"></span><button id="lbn" aria-label="下一張">→</button></div>
+</div>
+<footer class="pad lab"><a href="show.html">Floraison · Resort 2027</a><span>Petal to Petal Summer · Editor-in-Chief 寧安</span></footer>
+
+<script src="data.js"></script>
+<script>
+const L=window.LOOKS;const pad=n=>String(n).padStart(2,'0');const IMG=f=>'img/'+f;
+const ACT={A:['I','NOON','12:00'],B:['II','AFTERNOON','15:30'],C:['III','DUSK','19:10']};
+let cards=[];L.forEach(l=>['A','B','C'].forEach(s=>cards.push({l,s})));
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+function word(l,s){const x=l[s];return s==='A'?`${x.fruit} ${x.fruitEn}`:s==='B'?`${x.animal} ${x.animalEn}`:`${x.drink}`}
+function more(l,s){const x=l[s],d=x.dos;
+  if(s==='A')return `<div class="more"><span class="mk">PRODUCE 果實</span><div><b>${d.origin[0]}</b><i>${d.origin[1]}</i></div><div><b>${d.season[0]}</b><i>${d.season[1]}</i></div><div>${d.taste.map(t=>`<b>${t[0]}</b><i>${t[1]}</i>`).join(' ')}</div></div>`;
+  if(s==='B')return `<div class="more"><span class="mk">FIELD NOTE 同伴</span><span class="lat">${d.latin}</span><div><b>${d.habitat[0]}</b><i>${d.habitat[1]}</i> <b>${d.temper[0]}</b><i>${d.temper[1]}</i></div></div>`;
+  return `<div class="more"><span class="mk">RECIPE 配方 · ${d.method[1]}</span>${d.ing.map(i=>`<div><b>${i[0]}</b><i>${i[1]}</i><span class="dl"></span><span class="ml">${typeof i[2]==='number'?i[2]+' ml':i[2]}</span></div>`).join('')}</div>`;
+}
+function html(c,i){
+  const {l,s}=c,x=l[s],a=ACT[s];
+  return `<div class="pc" data-s="${s}" style="--r:${(rnd()*3-1.5).toFixed(2)}deg"><div class="in" tabindex="0" role="button" aria-label="${l.name} ${x.t}，翻面">
+  <div class="face front"><img loading="lazy" src="${IMG(x.img.wide)}" alt="${l.name} ${x.t}"><div class="corner"><small>Act ${a[0]} · ${a[1]}</small>${x.te}</div></div>
+  <div class="face back">
+    <div class="msg"><span class="k">FL${pad(l.n)} · ACT ${a[0]} · ${a[1]}</span><span class="t">${x.te}</span><div class="wds">${[...x.concept,...x.element].map(([c,e])=>`<span><b>${c}</b> ${e}</span>`).join('')}</div>${more(l,s)}<span class="sig">${l.name}</span></div>
+    <div class="rule"></div>
+    <div class="addr">
+      <div class="stamp"><div class="si" style="background-image:url('${IMG(x.img.sq)}')"><b>${pad(l.n)}</b><span>${s}</span></div></div>
+      <div class="pm"><div><b>FLORAISON</b>RESORT 2027<br>${a[2]}<br>ACT ${a[0]}</div></div>
+      <div class="l"><span>TO</span>You</div>
+      <div class="l"><span>FROM</span>${l.name}</div>
+      <div class="l"><span>WITH</span>${word(l,s)}</div>
+      <div class="l"><span>MODEL BY</span>${l.creator}</div>
+    </div>
+  </div></div></div>`;
+}
+let shown;const grid=document.getElementById('grid');
+function draw(list){seed=7;shown=list;grid.innerHTML=list.map(html).join('')}
+draw(cards);
+let li=0,lastFocus=null;
+const lb=document.getElementById('lb'),$=id=>document.getElementById(id);
+function fit(){const k=Math.min((innerWidth*.9)/540,(innerHeight-170)/360);const pc=lb.querySelector('.pc');if(!pc)return;pc.style.zoom=k;$('lbstage').style.width=540*k+'px';$('lbstage').style.height=360*k+'px'}
+function show(i,dir){li=(i+shown.length)%shown.length;const c=shown[li];
+  $('lbwrap').innerHTML=html(c,li).replace(/style="--r:[^"]*"/,'');
+  const pc=lb.querySelector('.pc');pc.querySelector('.in').removeAttribute('tabindex');pc.querySelector('img').loading='eager';
+  $('lbct').textContent=`${pad(li+1)} / ${pad(shown.length)}`;$('lbcap').textContent=`FL${pad(c.l.n)} · ${c.l.name} · ACT ${ACT[c.s][0]}`;fit();
+  const w=$('lbwrap');w.style.transition='none';w.style.opacity=0;w.style.transform=`translateX(${(dir||0)*40}px)`;requestAnimationFrame(()=>requestAnimationFrame(()=>{w.style.transition='';w.style.opacity='';w.style.transform=''}));}
+function openLb(i){lastFocus=document.activeElement;lb.classList.add('open');show(i);requestAnimationFrame(()=>lb.classList.add('show'));document.body.style.overflow='hidden';$('lbf').focus()}
+function closeLb(){lb.classList.remove('show','open');document.body.style.overflow='';if(lastFocus)lastFocus.focus()}
+const flip=()=>{const pc=lb.querySelector('.pc');if(pc)pc.classList.toggle('flipped')};
+grid.addEventListener('click',e=>{const p=e.target.closest('.pc');if(p)openLb([...grid.children].indexOf(p))});
+grid.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const p=e.target.closest('.pc');if(p){e.preventDefault();openLb([...grid.children].indexOf(p))}}});
+$('lbwrap').addEventListener('click',flip);$('lbf').onclick=flip;$('lbx').onclick=closeLb;
+$('lbp').onclick=()=>show(li-1,-1);$('lbn').onclick=()=>show(li+1,1);
+lb.addEventListener('click',e=>{if(e.target===lb)closeLb()});
+addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;if(e.key==='Escape')closeLb();else if(e.key==='ArrowLeft')show(li-1,-1);else if(e.key==='ArrowRight')show(li+1,1);else if(e.key===' '||e.key==='f'){if(document.activeElement!==$('lbf')){e.preventDefault();flip()}}});
+addEventListener('resize',()=>{if(lb.classList.contains('open'))fit()});
+let filter='all';
+document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{filter=b.dataset.f;document.querySelectorAll('[data-f]').forEach(x=>x.setAttribute('aria-pressed',x===b));draw(filter==='all'?cards:cards.filter(c=>c.s===filter))});
+document.getElementById('shuffle').onclick=()=>{const list=(filter==='all'?cards:cards.filter(c=>c.s===filter)).slice();for(let i=list.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[list[i],list[j]]=[list[j],list[i]]}draw(list)};
+</script>
+<script>try{if(parent.FL_SHELL)parent.FL_SHELL.sync(location.pathname.split('/').pop().replace('.html',''),location.hash,document.title)}catch(e){}
+addEventListener('hashchange',function(){try{parent.FL_SHELL.sync(location.pathname.split('/').pop().replace('.html',''),location.hash,document.title)}catch(e){}});</script>
+</body>
+</html>
